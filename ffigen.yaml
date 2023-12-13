@@ -1,0 +1,41 @@
+name: RaylibC
+description: Dart raylib Bindings
+output: lib/src/raylibc.dart
+
+headers:
+  entry-points:
+    - /home/linuxbrew/.linuxbrew/Cellar/raylib/5.0/include/raylib.h
+
+comments:
+  style: any
+  length: full
+
+# Remove noise. https://github.com/dart-lang/ffigen/issues/191
+macros:
+  exclude:
+    - __GNUC_VA_LIST
+
+# Remove noise.
+structs:
+  rename:
+    __va_list_tag: va_list_tag
+    rAudioBuffer: RAudioBuffer
+    rAudioProcessor: RAudioProcessor
+    '(.*)': 'RL$1'
+  dependency-only: opaque
+
+typedefs:
+  rename:
+    Texture2D: RLTexture2D
+    RenderTexture2D: RLRenderTexture2D
+    TextureCubemap: RLTextureCubemap
+    Camera: RLCamera
+
+enums:
+  exclude:
+    - 'bool'
+    - 'true'
+    - 'false'
+
+compiler-opts:
+  - -I /home/linuxbrew/.linuxbrew/Cellar/llvm/17.0.6/lib/clang/17/include/
