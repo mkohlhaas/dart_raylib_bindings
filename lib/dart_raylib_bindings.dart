@@ -5,4 +5,5 @@ export 'src/drawing.dart';
 export 'src/library.dart';
 export 'src/raylibc.dart';
 export 'src/text.dart';
+export 'src/vector2.dart';
 export 'src/window.dart';

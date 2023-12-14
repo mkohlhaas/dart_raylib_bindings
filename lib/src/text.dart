@@ -7,17 +7,13 @@ import '../dart_raylib_bindings.dart';
 class Text {
   final String text;
 
-  late Pointer<Utf8> mem;
-  static final Finalizer<Pointer<Utf8>> _finalizer = Finalizer((mem) {
-    calloc.free(mem);
-  });
-
-  Text(this.text) {
-    mem = text.toNativeUtf8();
-    _finalizer.attach(this, mem);
-  }
+  Text(this.text);
 
   void draw(int posX, int posY, int fontSize, Color color) {
-    rl.DrawText(mem.cast(), posX, posY, fontSize, color.mem.ref);
+    using((Arena arena) {
+      final textC = text.toNativeUtf8();
+      final colorC = color.toRL();
+      rl.DrawText(textC.cast(), posX, posY, fontSize, colorC.ref);
+    });
   }
 }

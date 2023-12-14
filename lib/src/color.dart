@@ -1,52 +1,30 @@
 // ignore_for_file: non_constant_identifier_names
-
 import 'dart:ffi';
 
-import 'package:dart_raylib_bindings/src/raylibc.dart';
 import 'package:ffi/ffi.dart';
+
+import '../dart_raylib_bindings.dart';
 
 class Color {
   int r;
   int g;
   int b;
   int a;
-  late Pointer<RLColor> mem;
-  static final Finalizer<Pointer<RLColor>> _finalizer = Finalizer((mem) {
-    calloc.free(mem);
-  });
 
-  Color(this.r, this.g, this.b, this.a) {
-    mem = calloc<RLColor>();
-    mem.ref.r = r;
-    mem.ref.g = g;
-    mem.ref.b = b;
-    mem.ref.a = a;
-    _finalizer.attach(this, mem);
-  }
-
-  set red(int r) {
-    this.r = r;
-    mem.ref.r = r;
-  }
-
-  set green(int g) {
-    this.g = g;
-    mem.ref.g = g;
-  }
-
-  set blue(int b) {
-    this.b = b;
-    mem.ref.b = b;
-  }
-
-  set alpha(int a) {
-    this.a = a;
-    mem.ref.a = a;
-  }
+  Color(this.r, this.g, this.b, this.a);
 
   @override
   String toString() {
     return 'Color($r, $g, $b, $a)';
+  }
+
+  Pointer<RLColor> toRL() {
+    final colorC = calloc<RLColor>();
+    colorC.ref.r = r;
+    colorC.ref.g = g;
+    colorC.ref.b = b;
+    colorC.ref.a = a;
+    return colorC;
   }
 
   static final LightGray = Color(200, 200, 200, 255);
